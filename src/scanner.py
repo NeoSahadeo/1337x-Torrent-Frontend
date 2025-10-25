@@ -24,29 +24,25 @@ class Scanner():
                 index += 1  # INFO: Skip first iteration
                 continue
             groups = match.groupdict()
-            results = re.finditer(r"(?P<name>name(.|\n)*?(?<=</td>))|(?P<seeds>seeds(.|\n)*?(?<=</td>))|(?P<leeches>leeches(.|\n)*?(?<=</td>))|(?P<size>size(.|\n)*?(?<=</td>))|(?P<uploader>uploader(.|\n)*?(?<=</td>))", groups['table_row'], re.MULTILINE)
+            results = re.finditer(r"(?P<name>name(.|\n)*?(?<=</td>))|(?P<seeds><td class=\".* seeds.*?<)|(?P<leeches><td class=\".* leeches.*?<)|(?P<size><td class=\".*size.*?<)|(?P<uploader>uploader(.|\n)*?(?<=</td>))", groups['table_row'], re.MULTILINE)
 
             item: Item = {}
-            item["name"] = "error"
             for m in results:
                 if (m.group("name")):
-                    # b = BeautifulSoup(m.group("name"))
-                    # print(m.group("name"))
-                    # _link = re.search(r"(?<=\")/torrent.*(?=\")", m.group("name"))
-                    # if _link:
-                    #     item["link"] = _link.group(0)
-                    # _name = re.search(r"(?<=>)\w.*(?=</a></td>)", m.group("name"))
-                    # if _name:
-                    #     item["name"] = _name.group(0)
+                    b = BeautifulSoup(m.group("name"), "html.parser")
+                    for x in b.find_all("a"):
+                        if str(x.get("href")).startswith("/torrent"):
+                            item["name"] = x.decode_contents()
+                            item["link"] = x.get("href")
                     continue
                 if (m.group("seeds")):
-                    item["seeds"] = re.search(r"(?<=>)\w.*(?=</td>)", m.group("seeds")).group(0)
+                    item["seeds"] = re.search(r"(?<=>)\d+", m.group("seeds")).group(0)
                     continue
                 if (m.group("leeches")):
-                    item["leeches"] = re.search(r"(?<=>)\w.*(?=</td>)", m.group("leeches")).group(0)
+                    item["leeches"] = re.search(r"(?<=>)\d+", m.group("leeches")).group(0)
                     continue
                 if (m.group("size")):
-                    item["size"] = re.search(r"(?<=>)\w.*(?=</td>)", m.group("size")).group(0)
+                    item["size"] = re.search(r"(?<=>)[a-zA-Z0-9. ]+", m.group("size")).group(0)
                     continue
                 # if (m.group("uploader")):
                 #     item["uploader"] = re.search(r"(? <= >)\w.*(?=</a>)", m.group("uploader")).group(0)

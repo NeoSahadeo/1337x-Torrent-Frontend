@@ -1,0 +1,38 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/main.py 1761419981 610
+.threading: Never
+
+.___v_desugar_1 = pyimport "qbittorrent"
+.qbittorrent = pyimport "qbittorrent"
+.Client: Never
+.___v_desugar_2 = pyimport "1337x/__pycache__/__init__"
+.1337x/__pycache__/__init__ = pyimport "1337x/__pycache__/__init__"
+.Networking: Never
+.EventListener: Never
+.Database: Never
+.Scanner: Never
+.Window: Never
+.Item: Never
+.db_callback: (item: Obj) -> NoneType
+.main: () -> NoneType
+
+.qb: Never
+
+
+
+
+anner}
+.Item: {scanner.Item}
+.___v_desugar_5 = pyimport "window"
+.window = pyimport "window"
+.Window: {window.Window}
+.___v_desugar_6 = pyimport "utils"
+.utils = pyimport "utils"
+.EventListener: {utils.EventListener}
+.db_callback: (item: scanner.Item) -> NoneType
+.main: () -> NoneType
+
+.qb: Never
+
+
+
+

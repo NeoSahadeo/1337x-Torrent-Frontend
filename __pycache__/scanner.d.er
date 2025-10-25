@@ -1,0 +1,23 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/scanner.py 1761400991 2464
+.___v_desugar_1: Never
+.dataclass: Never
+.re: Never
+
+.urllib: Never
+
+.___v_desugar_2 = pyimport "utils"
+.utils = pyimport "utils"
+.EventListener: {utils.EventListener}
+.Item: ClassType
+.Item.__call__: () -> scanner.Item
+.Item.link: Str
+.Item.name: Str
+.Item.seeds: Str
+.Item.leeches: Str
+.Item.size: Str
+.Item.id: Str
+
+.Scanner: ClassType
+.Scanner.__call__: () -> scanner.Scanner
+.Scanner.scan_search_page: (self: scanner.Scanner, text: Obj) -> NoneType
+

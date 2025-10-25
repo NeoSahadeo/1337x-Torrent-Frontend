@@ -1,0 +1,35 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/networking.py 1761402456 1801
+.threading: Never
+
+.___v_desugar_1: Never
+.dataclass: Never
+.urllib: Never
+
+.requests = pyimport "requests"
+
+.___v_desugar_2 = pyimport "bs4"
+.bs4 = pyimport "bs4"
+.BeautifulSoup: {bs4.BeautifulSoup}
+.___v_desugar_3 = pyimport "utils"
+.utils = pyimport "utils"
+.Singleton: {utils.Singleton}
+.EventListener: {utils.EventListener}
+.Networking: ClassType
+.Networking <: utils.EventListener
+.Networking.__call__: () -> networking.Networking
+.Networking.lock: Never
+.Networking.postfix: {"https:..www.1377x.to"}
+.Networking.can_run: (self: networking.Networking) -> Bool
+.Networking.query: (self: networking.Networking, q: Str, p: Obj := Obj) -> NoneType
+.Networking.follow_links: (self: networking.Networking, links: global::Iterable(Never)) -> NoneType
+
+
+networking = pyimport "networking"
+.n: .Networking
+.e: Never
+
+
+ing
+.e: Never
+
+

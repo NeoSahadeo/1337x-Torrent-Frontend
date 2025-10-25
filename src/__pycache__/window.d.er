@@ -1,0 +1,64 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/src/window.py 1761420037 6287
+.customtkinter = pyimport "customtkinter"
+
+.___v_desugar_1: Never
+.Union: Never
+.Callable: Never
+.___v_desugar_2: Never
+.Tk: Never
+.ttk: Never
+.Grid: Never
+.StringVar: Never
+.IntVar: Never
+.BooleanVar: Never
+.___v_desugar_3: Never
+.Item: Never
+.___v_desugar_4: Never
+.Database: Never
+.___v_desugar_5: Never
+.EventListener: Never
+.BaseClass: ClassType
+.BaseClass.__call__: () -> window.BaseClass
+.BaseClass.create_frame: (self: window.BaseClass, master: Obj := Obj, **kwargs := Obj) -> Never
+.BaseClass.search_callback: (self: window.BaseClass, e: Obj) -> NoneType
+
+.Dependencies: ClassType
+.Dependencies <: Never
+
+.FormElements: ClassType
+window = pyimport "window"
+.FormElements <: .Dependencies
+.FormElements.__list_elements__: Never
+.FormElements.search_input: (self: window.FormElements) -> NoneType
+.FormElements.create_list_item: (self: window.FormElements, item: Obj, value: Obj := Obj) -> NoneType
+
+.Buttons: ClassType
+.Buttons <: .Dependencies
+.Buttons.create_default_button: (self: window.Buttons, parent: Obj, text: Str, callback: Obj, bind: Obj := Obj, color: Obj := Obj, width: Obj := Obj) -> Never
+.Buttons.close_button: (self: window.Buttons) -> NoneType
+.Buttons.search_button: (self: window.Buttons) -> NoneType
+.Buttons.search_left_button: (self: window.Buttons) -> NoneType
+.Buttons.search_right_button: (self: window.Buttons) -> NoneType
+.Buttons.scan_button: (self: window.Buttons) -> NoneType
+.Buttons.clear_button: (self: window.Buttons) -> NoneType
+
+.ScrollFrame: ClassType
+.ScrollFrame <: Never
+.ScrollFrame.__call__: (master: Obj) -> window.ScrollFrame
+
+.Window: ClassType
+.Window <: .Buttons
+.Window.db: Never
+.Window.search_parent: Never
+.Window.page_number: Never
+.Window.root: Never
+.Window.query_string: Never
+.Window.scroll_parent: Never
+.Window.parent: Never
+.Window.__call__: (custom_elements: Obj := Obj) -> window.Window
+.Window.populate_list: (self: window.Window, item: Obj) -> NoneType
+
+
+
+
+

@@ -1,0 +1,20 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/utils.py 1761400916 1140
+.___v_desugar_1: Never
+.dataclass: Never
+.___v_desugar_2: Never
+.Callable: Never
+.ClassVar: Never
+.Dict: Never
+.List: Never
+.Singleton: ClassType
+.Singleton <: Type
+.Singleton._instances: global::Dict!({Never: Never})
+.Singleton.__call__: |Type_658 <: Structural({.__contains__ = (self: Never, Obj) -> Bool}), K <: Structural({._instances = Type_658 and Self}), Self <: global::Indexable(K, V), K <: Structural({._instances = Type_658 and Obj}), V: Type|(cls: K, *args: Obj, **kwargs := Obj) -> V
+
+.EventListener: ClassType
+.EventListener.__call__: () -> utils.EventListener
+.EventListener.__events__: Never
+.EventListener.subscribe: (self: utils.EventListener, event_name: Str, callback: Obj) -> NoneType
+.EventListener.unsubscribe: (self: utils.EventListener, event_name: Str, callback: Obj) -> NoneType
+.EventListener.dispatch: (self: utils.EventListener, event_name: Str, *args: Obj, **kwargs := Obj) -> NoneType
+

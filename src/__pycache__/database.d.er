@@ -1,0 +1,22 @@
+##[pylyzer] failed /home/neosahadeo/Documents/Projects/Python/1337x/src/database.py 1761419963 714
+.___v_desugar_1: Never
+.dataclass: Never
+.___v_desugar_2: Never
+.Singleton: Never
+.Database: ClassType
+.Database.__call__: () -> database.Database
+.Database.data: global::Dict!({Never: NoneType})
+.Database.get: (self: database.Database, key: Obj) -> NoneType
+.Database.getall: (self: database.Database) -> global::DictKeys(Never)
+.Database.update: (self: database.Database, key: Obj, value: NoneType) -> NoneType
+.Database.delete: (self: database.Database, key: Obj) -> NoneType
+.Database.clear: (self: database.Database) -> NoneType
+
+
+database = pyimport "database"
+.db: .Database
+
+.db: .Database
+
+
+
