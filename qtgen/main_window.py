@@ -92,6 +92,10 @@ class Ui_MainWindow(object):
         self.githubButton.setIcon(icon)
         self.githubButton.setObjectName("githubButton")
         self.horizontalLayout.addWidget(self.githubButton)
+        self.selectAllButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.selectAllButton.setGeometry(QtCore.QRect(10, 660, 81, 25))
+        self.selectAllButton.setStyleSheet("background-color: white")
+        self.selectAllButton.setObjectName("selectAllButton")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -107,3 +111,4 @@ class Ui_MainWindow(object):
         self.nextPage.setText(_translate("MainWindow", "Next Page"))
         self.closeButton.setText(_translate("MainWindow", "Close"))
         self.label.setText(_translate("MainWindow", "1337x (Unofficial) Torrent Frontend Beta"))
+        self.selectAllButton.setText(_translate("MainWindow", "Selected All"))

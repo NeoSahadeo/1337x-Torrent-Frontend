@@ -9,6 +9,7 @@ from src.database import Item, Database
 
 
 class ListItem(Ui_Frame, QWidget):
+    item: Item
     clicked = pyqtSignal()
 
     def __init__(self, parent=None):
@@ -24,6 +25,7 @@ class ListItem(Ui_Frame, QWidget):
 
 class Window(QMainWindow, Ui_MainWindow):
     __list_elements__: list[QCheckBox] = []
+    __select_all: bool = False
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -45,6 +47,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.queueSelected.clicked.connect(self.queue_selected)
         self.closeButton.clicked.connect(self.close_window)
         self.githubButton.clicked.connect(self.github_link)
+        self.selectAllButton.clicked.connect(self.select_all)
 
     def search_button(self):
         for x in self.__list_elements__:
@@ -63,6 +66,7 @@ class Window(QMainWindow, Ui_MainWindow):
                 self.db.delete(item.id)
 
         frame = ListItem()
+        frame.item = item
         frame.label.setText(f"{item.name} | {item.size} | Seeds {item.seeds} | Leeches {item.leeches}")
         frame.checkbox.setChecked(is_checked)
         frame.checkbox.clicked.connect(callback)
@@ -92,6 +96,20 @@ class Window(QMainWindow, Ui_MainWindow):
 
     def github_link(self):
         webbrowser.open("https://github.com/NeoSahadeo/1337x-Torrent-Frontend")
+
+    def select_all(self):
+        if self.__select_all:
+            self.selectAllButton.setText('Select All')
+            for x in self.__list_elements__:
+                x.checkbox.setChecked(False)
+                self.db.delete(x.item.id)
+            self.__select_all = False
+        else:
+            self.selectAllButton.setText('Deselect All')
+            for x in self.__list_elements__:
+                x.checkbox.setChecked(True)
+                self.db.update(x.item.id, x.item)
+            self.__select_all = True
 
     def close_window(self):
         self.close()
