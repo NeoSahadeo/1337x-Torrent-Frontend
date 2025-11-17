@@ -50,10 +50,13 @@ Once selected you may search for other torrents
 After you're done, click on `Queue Selected` to add those torrents to
 qBitorrent.
 
-## Roadmap
-
-- Add in QoL buttons
-
 ## Contributions
+
+### Things that need to be done
+
+- Add in loading state + log dialog
+- Add confirm dialog
+- Create installer
+- CLI to configure the qBitorrent client credentials
 
 "Talk is cheap, send patches" - Ffmpeg
