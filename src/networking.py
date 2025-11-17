@@ -1,9 +1,22 @@
 import threading
+from enum import Enum
 from dataclasses import dataclass
 import urllib
 import requests
 from bs4 import BeautifulSoup
 from src.utils import Singleton, EventListener
+
+
+class Categories(Enum):
+    TV = "TV"
+    Movies = "Movies"
+    Games = "Games"
+    Music = "Music"
+    Apps = "Apps"
+    Documentaries = "Documentaries"
+    Anime = "Anime"
+    Other = "Other"
+    XXX = "XXX"
 
 
 @dataclass
@@ -21,12 +34,12 @@ class Networking(EventListener, metaclass=Singleton):
             return False
         return True
 
-    def query(self, q: str, p=1) -> None:
+    def query(self, q: str, p=1, type: Categories = Categories.TV) -> None:
         if not self.can_run():
             return
         # print(q, p)
         encoded_query = urllib.parse.quote_plus(q)
-        response = requests.get(f"https://www.1337x.to/category-search/{encoded_query}/TV/{p}/")
+        response = requests.get(f"https://www.1337x.to/category-search/{encoded_query}/{type.value}/{p}/")
         # response = requests.get(f"{self.postfix}/sort-category-search/{encoded_query}/TV/seeders/desc/{p}/")
         self.dispatch("thread_unlock")
         self.lock.release()

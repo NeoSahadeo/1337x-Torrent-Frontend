@@ -8,6 +8,7 @@ from src.database import Item
 
 class Scanner():
     def scan_search_page(self, text) -> None:
+        EventListener().dispatch("show_logs")
         iterator = re.finditer(r"(?<=<tr>)(?P<table_row>(.|\n)*?)(?=<\/tr>)", text, re.MULTILINE)
         index = 0
         for match in iterator:
@@ -48,3 +49,4 @@ class Scanner():
                                          size=item["size"],
                                          id=item["id"],
                                      ))
+        # EventListener().dispatch("hide_logs")

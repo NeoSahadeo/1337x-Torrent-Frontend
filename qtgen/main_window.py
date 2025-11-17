@@ -21,10 +21,55 @@ class Ui_MainWindow(object):
         self.queueSelected = QtWidgets.QPushButton(parent=self.centralwidget)
         self.queueSelected.setGeometry(QtCore.QRect(1130, 680, 121, 25))
         self.queueSelected.setAutoFillBackground(False)
-        self.queueSelected.setStyleSheet("background-color: lightblue;")
+        self.queueSelected.setStyleSheet("background-color: rgb(17, 88, 13);\n"
+"color: white;")
         self.queueSelected.setObjectName("queueSelected")
         self.scrollArea = QtWidgets.QScrollArea(parent=self.centralwidget)
         self.scrollArea.setGeometry(QtCore.QRect(10, 60, 1241, 591))
+        self.scrollArea.setStyleSheet("QScrollArea QScrollBar:vertical {\n"
+"    background-color: black; /* orange track background */\n"
+"    width: 10px;\n"
+"    margin: 15px 0 15px 0;\n"
+"    border-radius: 7px;\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::handle:vertical {\n"
+"    background-color: white; /* darker orange handle */\n"
+"    min-height: 30px;\n"
+"    border-radius: 7px;\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::handle:vertical:hover {\n"
+"    background-color: white; /* lighter orange on hover */\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::handle:vertical:pressed {\n"
+"    background-color: #FF7F00; /* pressed state */\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::sub-line:vertical,\n"
+"QScrollArea QScrollBar::add-line:vertical {\n"
+"    background-color: #FFA500; /* scrollbar buttons background */\n"
+"    height: 15px;\n"
+"    border-radius: 7px;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::sub-line:vertical:hover,\n"
+"QScrollArea QScrollBar::add-line:vertical:hover {\n"
+"    background-color: #FF8C00; /* hover state for buttons */\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::up-arrow:vertical,\n"
+"QScrollArea QScrollBar::down-arrow:vertical {\n"
+"    background: none; /* hide arrows or customize if needed */\n"
+"}\n"
+"\n"
+"QScrollArea QScrollBar::add-page:vertical,\n"
+"QScrollArea QScrollBar::sub-page:vertical {\n"
+"    background: none;\n"
+"}\n"
+"")
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -82,7 +127,7 @@ class Ui_MainWindow(object):
         self.label = QtWidgets.QLabel(parent=self.layoutWidget)
         self.label.setMinimumSize(QtCore.QSize(301, 17))
         self.label.setStyleSheet("font: 600 12pt \"URW Gothic\";\n"
-"color: rgb(255, 255, 255);")
+"color: #F14E13;")
         self.label.setObjectName("label")
         self.horizontalLayout.addWidget(self.label)
         self.githubButton = QtWidgets.QPushButton(parent=self.layoutWidget)
@@ -96,6 +141,43 @@ class Ui_MainWindow(object):
         self.selectAllButton.setGeometry(QtCore.QRect(10, 660, 81, 25))
         self.selectAllButton.setStyleSheet("background-color: white")
         self.selectAllButton.setObjectName("selectAllButton")
+        self.categoryButton = QtWidgets.QComboBox(parent=self.centralwidget)
+        self.categoryButton.setGeometry(QtCore.QRect(690, 20, 121, 25))
+        self.categoryButton.setStyleSheet("QComboBox {\n"
+"background-color: white;\n"
+"color: black;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background-color: white;\n"
+"    color: black; /* normal text color */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView::item {\n"
+"    background-color: white;\n"
+"    color: black;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView::item:hover {\n"
+"    background-color: #F14E13;\n"
+"    color: black; /* hovered text color */\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView::item:selected {\n"
+"    background-color: #F14E13FF;\n"
+"    color: black;\n"
+"}\n"
+"")
+        self.categoryButton.setObjectName("categoryButton")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
+        self.categoryButton.addItem("")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -112,3 +194,12 @@ class Ui_MainWindow(object):
         self.closeButton.setText(_translate("MainWindow", "Close"))
         self.label.setText(_translate("MainWindow", "1337x (Unofficial) Torrent Frontend Beta"))
         self.selectAllButton.setText(_translate("MainWindow", "Selected All"))
+        self.categoryButton.setItemText(0, _translate("MainWindow", "TV"))
+        self.categoryButton.setItemText(1, _translate("MainWindow", "Movies"))
+        self.categoryButton.setItemText(2, _translate("MainWindow", "Games"))
+        self.categoryButton.setItemText(3, _translate("MainWindow", "Music"))
+        self.categoryButton.setItemText(4, _translate("MainWindow", "Apps"))
+        self.categoryButton.setItemText(5, _translate("MainWindow", "Documentaries"))
+        self.categoryButton.setItemText(6, _translate("MainWindow", "Anime"))
+        self.categoryButton.setItemText(7, _translate("MainWindow", "Other"))
+        self.categoryButton.setItemText(8, _translate("MainWindow", "XXX"))

@@ -4,8 +4,10 @@ from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QFrame, QLabel, QCheckBox
 from qtgen.main_window import Ui_MainWindow
 from qtgen.list_item import Ui_Frame
+from qtgen.loading import Ui_Loading
 from src.utils import EventListener
 from src.database import Item, Database
+from src.networking import Categories
 
 
 class ListItem(Ui_Frame, QWidget):
@@ -39,9 +41,17 @@ class Window(QMainWindow, Ui_MainWindow):
         self.layout = QVBoxLayout(self.container)
         self.scrollArea.setWidget(self.container)
 
+        # self.loading_widget = QWidget()
+        # loading_ui = Ui_Loading()
+        # loading_ui.setupUi(self.loading_widget)
+        # self.layout.addWidget(self.loading_widget)
+        # self.loading_widget.hide()
+
         self.EventHandler.subscribe("scan_search_page", self.populate_list)
 
         self.search.clicked.connect(self.search_button)
+        self.searchBox.returnPressed.connect(self.search_button)
+        self.categoryButton.currentIndexChanged.connect(self.search_button)
         self.nextPage.clicked.connect(self.next_page)
         self.prevPage.clicked.connect(self.prev_page)
         self.queueSelected.clicked.connect(self.queue_selected)
@@ -50,13 +60,15 @@ class Window(QMainWindow, Ui_MainWindow):
         self.selectAllButton.clicked.connect(self.select_all)
 
     def search_button(self):
+        self.loading_widget.show()
+        return
         for x in self.__list_elements__:
             x.deleteLater()
         self.__list_elements__ = []
         for x in self.db.getall():
             item: Item = self.db.get(x)
             self.create_list_item(item, True)
-        self.EventHandler.dispatch("query_request", self.searchBox.text(), self.current_page)
+        self.EventHandler.dispatch("query_request", self.searchBox.text(), self.current_page, list(Categories)[self.categoryButton.currentIndex()])
 
     def create_list_item(self, item: Item, is_checked=False):
         def callback():

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-widget=(list_item.ui main_window.ui)
+widget=(list_item.ui main_window.ui loading.ui)
 
 parent_dir=$(dirname "$(dirname "$(readlink -f "$0")")")
 
