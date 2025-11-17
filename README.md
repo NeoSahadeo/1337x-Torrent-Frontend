@@ -3,7 +3,7 @@
 <div align="center">
 A simple frontend to automate torrent downloads.
 
-![Preview](https://i.imgur.com/AK1BDWk.png)
+![Preview](https://i.imgur.com/mWBhsnh.png)
 </div>
 
 ## Setup
