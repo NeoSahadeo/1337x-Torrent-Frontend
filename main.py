@@ -34,4 +34,4 @@ if __name__ == "__main__":
         qb.login('admin', 'admin1234')
         main()
     except ConnectionError:
-        print("Qbittorent is not open!")
+        print("Qbittorrent is not open!")
