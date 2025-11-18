@@ -6,6 +6,15 @@ A simple frontend to automate torrent downloads.
 ![Preview](https://i.imgur.com/mWBhsnh.png)
 </div>
 
+## Download
+
+[Download the latest binary](https://github.com/NeoSahadeo/1337x-Torrent-Frontend/releases/) and run it.
+
+> [!IMPORTANT]
+> 
+> Make sure qBittorrent is open before running it
+> or it will not open.
+
 ## Setup
 
 As the app is in beta, Linux has first class support (because it's the only
