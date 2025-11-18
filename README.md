@@ -15,6 +15,17 @@ A simple frontend to automate torrent downloads.
 > Make sure qBittorrent is open before running it
 > or it will not open.
 
+#### Example drun application entry
+
+If you are using drun or another application launcher that uses `.desktop` you can create an entry like so
+
+```
+[Desktop Entry]
+Name=1337xFrontEnd
+Exec=/home/neosahadeo/Applications/1337xFrontEnd
+Type=Application
+```
+
 ## Setup
 
 As the app is in beta, Linux has first class support (because it's the only
