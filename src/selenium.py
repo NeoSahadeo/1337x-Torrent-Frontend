@@ -1,3 +1,4 @@
+from typing import Literal
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -14,11 +15,17 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
     def __init__(self):
         self.search_state = SearchState()
         self.dispatch("log_debug", "SearchState setup")
+
         self.subscribe("category_update", self.set_category)
         self.dispatch("log_debug", "Subscribed to category_update")
 
+        self.subscribe("next_page", self.next_page)
+        self.dispatch("log_debug", "Subscribed to next_page")
+        self.subscribe("prev_page", self.prev_page)
+        self.dispatch("log_debug", "Subscribed to prev_page")
+
         self.options = Options()
-        # self.options.add_argument("--headless=new")
+        self.options.add_argument("--headless=new")
         # self.options.add_argument("--remote-debugging-port=9222")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
@@ -62,11 +69,6 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             link_element = self.driver.find_element(By.PARTIAL_LINK_TEXT, "1377x | Download torrents")
             link_element.click()
 
-            self.dispatch("log_debug", "Closing ads")
-            input_field = self.driver.find_element(By.TAG_NAME, "input")
-            input_field.click()
-            self.close_popups()
-            self.search("__1337x__FRONTEND_AGENT__")
             self.dispatch("log_debug", "Ready for input")
         except NoSuchElementException:
             self.dispatch("log_error", "No Element found")
@@ -92,6 +94,40 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
         self.driver.switch_to.window(first_window)
         return extra_windows
 
+    def click(self, element):
+        try:
+            element.click()
+            if self.close_popups():
+                element.click()
+        except NoSuchElementException:
+            pass
+        except StaleElementReferenceException:
+            pass
+
+    def page_change(self, direction: Literal[">>", "<<"]):
+        try:
+            elements = self.driver.find_elements(By.TAG_NAME, "a")
+            for e in elements:
+                if e.text == direction:
+                    self.click(e)
+                    break
+        except NoSuchElementException:
+            pass
+        except StaleElementReferenceException:
+            pass
+        finally:
+            self.dispatch("clear_displayed_items")
+            self.dispatch("log_debug", "Refreshing Page Data")
+            self.dispatch("query_response", self.driver.page_source)
+
+    def next_page(self):
+        self.dispatch("log_debug", "Going to next page")
+        self.page_change(">>")
+
+    def prev_page(self):
+        self.dispatch("log_debug", "Going to prev page")
+        self.page_change("<<")
+
     def set_category(self):
         try:
             self.dispatch("log_debug", "Setting category")
@@ -101,9 +137,7 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             self.dispatch("log_debug", "Category set to: " + category)
             for option in select.options:
                 if option.text.strip() == category:
-                    option.click()
-                    if self.close_popups():
-                        option.click()
+                    self.click(option)
                     break
         except StaleElementReferenceException:
             pass
@@ -113,6 +147,7 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
         try:
             self.close_popups()
             element = self.driver.find_element(By.TAG_NAME, "input")
+            self.click(element)
             element.clear()
             element.send_keys(query)
             element.submit()

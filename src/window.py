@@ -41,6 +41,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.scrollArea.setWidget(self.container)
 
         self.EventHandler.subscribe("scan_search_page", self.populate_list)
+        self.EventHandler.subscribe("clear_displayed_items", self.clear_displayed_items)
 
         self.search.clicked.connect(self.search_button)
         self.searchBox.returnPressed.connect(self.search_button)
@@ -56,15 +57,17 @@ class Window(QMainWindow, Ui_MainWindow):
         self.search_state.set_category(list(Categories)[self.categoryButton.currentIndex()])
         self.EventHandler.dispatch("category_update")
 
-    def search_button(self):
+    def clear_displayed_items(self):
         for x in self.__list_elements__:
             x.deleteLater()
         self.__list_elements__ = []
         for x in self.db.getall():
             item: Item = self.db.get(x)
             self.create_list_item(item, True)
+
+    def search_button(self):
+        self.EventHandler.dispatch("clear_displayed_items")
         self.EventHandler.dispatch("query_request", self.searchBox.text())
-        # , self.current_page, list(Categories)[self.categoryButton.currentIndex()])
 
     def create_list_item(self, item: Item, is_checked=False):
         def callback():
@@ -87,13 +90,10 @@ class Window(QMainWindow, Ui_MainWindow):
             self.create_list_item(item)
 
     def next_page(self):
-        self.current_page += 1
-        self.search_button()
+        self.EventHandler.dispatch("next_page")
 
     def prev_page(self):
-        if self.current_page > 1:
-            self.current_page -= 1
-        self.search_button()
+        self.EventHandler.dispatch("prev_page")
 
     def queue_selected(self):
         links = []

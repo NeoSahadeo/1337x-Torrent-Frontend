@@ -1,5 +1,6 @@
 import threading
 from dataclasses import dataclass
+import requests
 import urllib
 from bs4 import BeautifulSoup
 from src.utils import Singleton, EventListener
@@ -32,17 +33,17 @@ class Networking(EventListener, metaclass=Singleton):
     def follow_links(self, links):
         if not self.can_run():
             return
-        # valid_links = []
-        # for _link in links:
-        #     response = self.session.get(f"{self.postfix}{_link}")
-        #     soup = BeautifulSoup(response.text, "html.parser")
-        #     anchors = soup.find_all('a')
-        #     for x in anchors:
-        #         if (x.decode_contents().__contains__("Magnet Download")):
-        #             valid_links.append(x.get("href"))
-        # self.dispatch("thread_unlock")
-        # self.lock.release()
-        # self.dispatch("follow_links_response", valid_links)
+        valid_links = []
+        for _link in links:
+            response = requests.get(f"{self.postfix}{_link}")
+            soup = BeautifulSoup(response.text, "html.parser")
+            anchors = soup.find_all('a')
+            for x in anchors:
+                if (x.decode_contents().__contains__("Magnet Download")):
+                    valid_links.append(x.get("href"))
+        self.dispatch("thread_unlock")
+        self.lock.release()
+        self.dispatch("follow_links_response", valid_links)
 
 
 if __name__ == "__main__":
