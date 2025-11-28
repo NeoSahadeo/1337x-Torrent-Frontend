@@ -11,7 +11,7 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
 
     def __init__(self):
         self.options = Options()
-        # self.options.add_argument("--headless=new")
+        self.options.add_argument("--headless=new")
         self.options.add_argument("--remote-debugging-port=9222")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
@@ -27,6 +27,9 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
         self.options.add_argument("--disable-low-res-tiling")
         self.options.add_argument("--log-level=3")
         self.options.add_argument("--silent")
+        self.options.add_argument(
+            "user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        )
 
         self.options.add_experimental_option("detach", True)
         self.dispatch("log_debug", "Setup Driver Options")
