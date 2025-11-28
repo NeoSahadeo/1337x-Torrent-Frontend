@@ -1,10 +1,35 @@
 # 1337x Torrent Frontend (Beta)
 
+> [!IMPORTANT]
+> I am working on porting the app to a different platform. This is because there have been recent changes on 1337x that prevent my traditional way of webscraping.
+>
+> The App currently does not work.
+
 <div align="center">
 A simple frontend to automate torrent downloads.
 
 ![Preview](https://i.imgur.com/mWBhsnh.png)
 </div>
+
+## Download
+
+[Download the latest binary](https://github.com/NeoSahadeo/1337x-Torrent-Frontend/releases/) and run it.
+
+> [!IMPORTANT]
+> 
+> Make sure qBittorrent is open before running it
+> or it will not open.
+
+#### Example drun application entry
+
+If you are using drun or another application launcher that uses `.desktop` you can create an entry like so
+
+```
+[Desktop Entry]
+Name=1337xFrontEnd
+Exec=/home/neosahadeo/Applications/1337xFrontEnd
+Type=Application
+```
 
 ## Setup
 
