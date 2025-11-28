@@ -1,5 +1,18 @@
+from enum import Enum
 from dataclasses import dataclass
 from src.utils import Singleton
+
+
+class Categories(Enum):
+    TV = "TV Only"
+    Movies = "Movies Only"
+    Games = "Games Only"
+    Music = "Music Only"
+    Apps = "Applications Only"
+    Documentaries = "Documentaries Only"
+    Anime = "Anime Only"
+    Other = "Other Only"
+    XXX = "XXX Only"
 
 
 @dataclass
@@ -10,6 +23,24 @@ class Item:
     leeches: str = ""
     size: str = ""
     id: str = ""
+
+
+@dataclass
+class SearchState(metaclass=Singleton):
+    category = Categories.TV
+    page = 1
+
+    def set_category(self, category: Categories):
+        self.category = category
+
+    def get_category(self):
+        return self.category.value
+
+    def set_page(self, number):
+        self.page = number
+
+    def get_page(self):
+        return self.page
 
 
 @dataclass

@@ -5,8 +5,7 @@ from PyQt6.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QFrame, QLabel, Q
 from qtgen.main_window import Ui_MainWindow
 from qtgen.list_item import Ui_Frame
 from src.utils import EventListener
-from src.database import Item, Database
-from src.networking import Categories
+from src.database import Item, Database, Categories, SearchState
 
 
 class ListItem(Ui_Frame, QWidget):
@@ -35,6 +34,7 @@ class Window(QMainWindow, Ui_MainWindow):
         self.current_page = 1
         self.EventHandler = EventListener()
         self.db = Database()
+        self.search_state = SearchState()
 
         self.container = QWidget()
         self.layout = QVBoxLayout(self.container)
@@ -44,13 +44,17 @@ class Window(QMainWindow, Ui_MainWindow):
 
         self.search.clicked.connect(self.search_button)
         self.searchBox.returnPressed.connect(self.search_button)
-        self.categoryButton.currentIndexChanged.connect(self.search_button)
+        self.categoryButton.currentIndexChanged.connect(self.update_category)
         self.nextPage.clicked.connect(self.next_page)
         self.prevPage.clicked.connect(self.prev_page)
         self.queueSelected.clicked.connect(self.queue_selected)
         self.closeButton.clicked.connect(self.close_window)
         self.githubButton.clicked.connect(self.github_link)
         self.selectAllButton.clicked.connect(self.select_all)
+
+    def update_category(self):
+        self.search_state.set_category(list(Categories)[self.categoryButton.currentIndex()])
+        self.EventHandler.dispatch("category_update")
 
     def search_button(self):
         for x in self.__list_elements__:
@@ -59,7 +63,8 @@ class Window(QMainWindow, Ui_MainWindow):
         for x in self.db.getall():
             item: Item = self.db.get(x)
             self.create_list_item(item, True)
-        self.EventHandler.dispatch("query_request", self.searchBox.text(), self.current_page, list(Categories)[self.categoryButton.currentIndex()])
+        self.EventHandler.dispatch("query_request", self.searchBox.text())
+        # , self.current_page, list(Categories)[self.categoryButton.currentIndex()])
 
     def create_list_item(self, item: Item, is_checked=False):
         def callback():

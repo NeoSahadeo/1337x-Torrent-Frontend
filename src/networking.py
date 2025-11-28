@@ -1,23 +1,9 @@
 import threading
-from enum import Enum
 from dataclasses import dataclass
 import urllib
 from bs4 import BeautifulSoup
 from src.utils import Singleton, EventListener
 from src.selenium import SeleniumAgent
-from selenium.webdriver.common.by import By
-
-
-class Categories(Enum):
-    TV = "TV"
-    Movies = "Movies"
-    Games = "Games"
-    Music = "Music"
-    Apps = "Apps"
-    Documentaries = "Documentaries"
-    Anime = "Anime"
-    Other = "Other"
-    XXX = "XXX"
 
 
 @dataclass
@@ -36,7 +22,7 @@ class Networking(EventListener, metaclass=Singleton):
             return False
         return True
 
-    def query(self, q: str, p=1, type: Categories = Categories.TV) -> None:
+    def query(self, q: str) -> None:
         if not self.can_run():
             return
         self.agent.search(q)

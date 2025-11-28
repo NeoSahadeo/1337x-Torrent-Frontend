@@ -3,16 +3,23 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
+from selenium.webdriver.support.ui import Select
 from src.utils import Singleton, EventListener
+from src.database import SearchState
 
 
 class SeleniumAgent(EventListener, metaclass=Singleton):
 
     def __init__(self):
+        self.search_state = SearchState()
+        self.dispatch("log_debug", "SearchState setup")
+        self.subscribe("category_update", self.set_category)
+        self.dispatch("log_debug", "Subscribed to category_update")
+
         self.options = Options()
-        self.options.add_argument("--headless=new")
-        self.options.add_argument("--remote-debugging-port=9222")
+        # self.options.add_argument("--headless=new")
+        # self.options.add_argument("--remote-debugging-port=9222")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
         self.options.add_argument("--disable-renderer-backgrounding")
@@ -41,13 +48,14 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
 
         self.dispatch("log_debug", "Attempting to navigate to 1337x")
         self.driver.get("https://duckduckgo.com/?origin=funnel_home_website&t=h_&q=1337x.to&ia=web")
-        self.driver.execute_script("document.body.style.zoom='100%'")  # Triggers reflow
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")  # Scroll to bottom to trigger lazy loads
+        # self.driver.execute_script("document.body.style.zoom='100%'")  # Triggers reflow
+        # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")  # Scroll to bottom to trigger lazy loads
         try:
             self.dispatch("log_debug", "Waiting for page to load")
             wait = WebDriverWait(self.driver, 15)
             # wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
             link_element = wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, "1377x | Download torrents")))
+            self.dispatch("log_debug", "Page Loaded")
 
             self.dispatch("log_debug", "Searching for correct link")
 
@@ -58,6 +66,7 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             input_field = self.driver.find_element(By.TAG_NAME, "input")
             input_field.click()
             self.close_popups()
+            self.search("__1337x__FRONTEND_AGENT__")
             self.dispatch("log_debug", "Ready for input")
         except NoSuchElementException:
             self.dispatch("log_error", "No Element found")
@@ -71,14 +80,33 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             self.driver.quit()
             self.dispatch("error_close")
 
-    def close_popups(self):
+    def close_popups(self) -> bool:
         self.dispatch("log_debug", "Closing extra windows")
+        extra_windows = False
         first_window = self.driver.window_handles[0]
         for handle in self.driver.window_handles:
             if handle != first_window:
                 self.driver.switch_to.window(handle)
                 self.driver.close()
+                extra_windows = True
         self.driver.switch_to.window(first_window)
+        return extra_windows
+
+    def set_category(self):
+        try:
+            self.dispatch("log_debug", "Setting category")
+            select_element = self.driver.find_element(By.TAG_NAME, "select")
+            select = Select(select_element)
+            category = self.search_state.get_category()
+            self.dispatch("log_debug", "Category set to: " + category)
+            for option in select.options:
+                if option.text.strip() == category:
+                    option.click()
+                    if self.close_popups():
+                        option.click()
+                    break
+        except StaleElementReferenceException:
+            pass
 
     def search(self, query):
         self.dispatch("log_info", "Running search on " + query)
@@ -88,10 +116,11 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             element.clear()
             element.send_keys(query)
             element.submit()
-            self.close_popups()
             self.dispatch("log_debug", "Waiting for page to load")
             wait = WebDriverWait(self.driver, 15)
             wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
+            self.dispatch("log_debug", "Page Loaded")
+            self.set_category()
             self.dispatch("query_response", self.driver.page_source)
         except TimeoutException:
             self.dispatch("log_error", "Request Timed Out")
