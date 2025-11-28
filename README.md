@@ -1,10 +1,5 @@
 # 1337x Torrent Frontend (Beta)
 
-> [!IMPORTANT]
-> I am working on porting the app to a different platform. This is because there have been recent changes on 1337x that prevent my traditional way of webscraping.
->
-> The App currently does not work.
-
 <div align="center">
 A simple frontend to automate torrent downloads.
 
@@ -15,8 +10,12 @@ A simple frontend to automate torrent downloads.
 
 [Download the latest binary](https://github.com/NeoSahadeo/1337x-Torrent-Frontend/releases/) and run it.
 
+> [!INFO]
+>
+> Due to recent changes to 1337x, the app uses a Selenium backend to fake user interactions.
+
 > [!IMPORTANT]
-> 
+>
 > Make sure qBittorrent is open before running it
 > or it will not open.
 
