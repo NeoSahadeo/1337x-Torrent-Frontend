@@ -115,4 +115,5 @@ class Window(QMainWindow, Ui_MainWindow):
             self.__select_all = True
 
     def close_window(self):
+        self.EventHandler.dispatch("close_selenium")
         self.close()

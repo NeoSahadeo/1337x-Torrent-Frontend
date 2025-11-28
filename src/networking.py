@@ -2,9 +2,10 @@ import threading
 from enum import Enum
 from dataclasses import dataclass
 import urllib
-import requests
 from bs4 import BeautifulSoup
 from src.utils import Singleton, EventListener
+from src.selenium import SeleniumAgent
+from selenium.webdriver.common.by import By
 
 
 class Categories(Enum):
@@ -25,6 +26,7 @@ class Networking(EventListener, metaclass=Singleton):
     postfix = "https://www.1377x.to"
 
     def __init__(self):
+        self.agent = SeleniumAgent()
         self.subscribe("query_request", self.query)
         self.subscribe("follow_links_request", self.follow_links)
 
@@ -37,28 +39,24 @@ class Networking(EventListener, metaclass=Singleton):
     def query(self, q: str, p=1, type: Categories = Categories.TV) -> None:
         if not self.can_run():
             return
-        # print(q, p)
-        encoded_query = urllib.parse.quote_plus(q)
-        response = requests.get(f"https://www.1337x.to/category-search/{encoded_query}/{type.value}/{p}/")
-        # response = requests.get(f"{self.postfix}/sort-category-search/{encoded_query}/TV/seeders/desc/{p}/")
+        self.agent.search(q)
         self.dispatch("thread_unlock")
         self.lock.release()
-        self.dispatch("query_response", response.text)
 
     def follow_links(self, links):
         if not self.can_run():
             return
-        valid_links = []
-        for _link in links:
-            response = requests.get(f"{self.postfix}{_link}")
-            soup = BeautifulSoup(response.text, "html.parser")
-            anchors = soup.find_all('a')
-            for x in anchors:
-                if (x.decode_contents().__contains__("Magnet Download")):
-                    valid_links.append(x.get("href"))
-        self.dispatch("thread_unlock")
-        self.lock.release()
-        self.dispatch("follow_links_response", valid_links)
+        # valid_links = []
+        # for _link in links:
+        #     response = self.session.get(f"{self.postfix}{_link}")
+        #     soup = BeautifulSoup(response.text, "html.parser")
+        #     anchors = soup.find_all('a')
+        #     for x in anchors:
+        #         if (x.decode_contents().__contains__("Magnet Download")):
+        #             valid_links.append(x.get("href"))
+        # self.dispatch("thread_unlock")
+        # self.lock.release()
+        # self.dispatch("follow_links_response", valid_links)
 
 
 if __name__ == "__main__":

@@ -6,9 +6,10 @@ from src.utils import EventListener
 from src.database import Item
 
 
-class Scanner():
+class Scanner(EventListener):
+
     def scan_search_page(self, text) -> None:
-        EventListener().dispatch("show_logs")
+        # self.dispatch("log_debug", text)
         iterator = re.finditer(r"(?<=<tr>)(?P<table_row>(.|\n)*?)(?=<\/tr>)", text, re.MULTILINE)
         index = 0
         for match in iterator:
@@ -40,13 +41,14 @@ class Scanner():
                 #     item["uploader"] = re.search(r"(? <= >)\w.*(?=</a>)", m.group("uploader")).group(0)
                 #     continue
             item["id"] = urllib.parse.quote_plus(item["name"] + item["size"] + item["leeches"] + item["seeds"])
-            EventListener().dispatch("scan_search_page",
-                                     Item(
-                                         link=item["link"],
-                                         name=item["name"],
-                                         seeds=item["seeds"],
-                                         leeches=item["leeches"],
-                                         size=item["size"],
-                                         id=item["id"],
-                                     ))
-        # EventListener().dispatch("hide_logs")
+
+            item_obj = Item(
+                link=item["link"],
+                name=item["name"],
+                seeds=item["seeds"],
+                leeches=item["leeches"],
+                size=item["size"],
+                id=item["id"],
+            )
+            self.dispatch("log_debug", item_obj.name)
+            self.dispatch("scan_search_page", item_obj)
