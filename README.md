@@ -1,5 +1,10 @@
 # 1337x Torrent Frontend (Beta)
 
+> [!IMPORTANT]
+> I am working on porting the app to a different platform. This is because there have been recent changes on 1337x that prevent my traditional way of webscraping.
+>
+> The App currently does not work.
+
 <div align="center">
 A simple frontend to automate torrent downloads.
 
