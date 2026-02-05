@@ -1,10 +1,11 @@
+from time import sleep
 from typing import Literal
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException, ElementClickInterceptedException
 from selenium.webdriver.support.ui import Select
 from src.utils import Singleton, EventListener
 from src.database import SearchState
@@ -61,14 +62,14 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
             self.dispatch("log_debug", "Waiting for page to load")
             wait = WebDriverWait(self.driver, 15)
             # wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
-            link_element = wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, "1377x | Download torrents")))
+            link_text = "1337x | 1337x.to Torrent Search Engine"
+            link_element = wait.until(EC.visibility_of_element_located((By.PARTIAL_LINK_TEXT, link_text)))
             self.dispatch("log_debug", "Page Loaded")
 
             self.dispatch("log_debug", "Searching for correct link")
 
-            link_element = self.driver.find_element(By.PARTIAL_LINK_TEXT, "1377x | Download torrents")
+            link_element = self.driver.find_element(By.PARTIAL_LINK_TEXT, link_text)
             link_element.click()
-
             self.dispatch("log_debug", "Ready for input")
         except NoSuchElementException:
             self.dispatch("log_error", "No Element found")
@@ -102,6 +103,8 @@ class SeleniumAgent(EventListener, metaclass=Singleton):
         except NoSuchElementException:
             pass
         except StaleElementReferenceException:
+            pass
+        except ElementClickInterceptedException:
             pass
 
     def page_change(self, direction: Literal[">>", "<<"]):
